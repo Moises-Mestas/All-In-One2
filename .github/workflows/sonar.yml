@@ -39,10 +39,9 @@ jobs:
             "-Dsonar.projectKey=Moises-Mestas_All-In-One2"
             "-Dsonar.organization=moises-mestas"
             "-Dsonar.python.coverage.reportPaths=coverage.xml" 
-            "-Dsonar.sources=apps/api/app,packages"
+            "-Dsonar.sources=apps/api/app,packages,apps/web"
             "-Dsonar.tests=apps/api/tests"
-            "-Dsonar.exclusions=apps/api/tests/**"
-            "-Dsonar.coverage.exclusions=apps/web/**"
+            "-Dsonar.exclusions=apps/api/tests/**,apps/web/node_modules/**,apps/web/dist/**,**/.pytest_cache/**"
             "-Dsonar.cpd.exclusions=apps/web/src/pages/webEditor/editorBlocks.ts"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
