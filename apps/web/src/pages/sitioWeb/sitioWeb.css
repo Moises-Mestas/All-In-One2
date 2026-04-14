@@ -1,0 +1,306 @@
+.sitioWeb-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sitioWeb-container .main-content {
+  flex: 1;
+  background: #f8fafc;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.sitioWeb-container .main-content h1 {
+  color: #1e293b;
+  font-size: 32px;
+  margin: 0 0 16px 0;
+}
+
+.sitioWeb-container .main-content p {
+  color: #64748b;
+  font-size: 16px;
+}
+
+.sitioWeb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.user-email {
+  color: #64748b;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-primary {
+  /* 👇 CORRECCIÓN 1: Azul más oscuro (#1d4ed8) para garantizar contraste >4.5:1 con texto blanco */
+  background: #1d4ed8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  /* 👇 Mantenemos la armonía oscureciendo también el hover */
+  background: #1e40af;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #475569;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e1;
+}
+
+.sites-section h2 {
+  color: #1e293b;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.sites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.site-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+
+.site-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.site-info h3 {
+  margin: 0 0 4px 0;
+  color: #1e293b;
+  font-size: 16px;
+}
+
+.site-slug {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.site-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.btn-icon:hover {
+  background: #f1f5f9;
+}
+
+.btn-icon.btn-danger:hover {
+  background: #fee2e2;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state p {
+  margin-bottom: 16px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal h2 {
+  margin: 0 0 24px 0;
+  color: #1e293b;
+}
+
+.modal .form-group {
+  margin-bottom: 16px;
+}
+
+.modal .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.modal .form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.modal .form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.error-message {
+  background: #fee2e2;
+  /* 👇 CORRECCIÓN 2: Rojo más profundo (#b91c1c) para cumplir contraste con el fondo claro */
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #64748b;
+  font-size: 18px;
+}
+
+.create-site-form {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.create-site-form h3 {
+  margin: 0 0 16px 0;
+  color: #1e293b;
+  font-size: 18px;
+}
+
+.form-inline {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.form-inline .form-group {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 0;
+}
+
+.form-inline .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form-inline .form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-inline .form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-group {
+  display: flex;
+  width: 100%;
+}
+
+.input-group input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  flex: 1;
+}
+
+.input-addon {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-left: none;
+  padding: 10px 12px;
+  border-radius: 0 8px 8px 0;
+  /* 👇 CORRECCIÓN 3: Gris más oscuro (#475569) para que destaque bien sobre el fondo claro (#f1f5f9) */
+  color: #475569;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.hint {
+  color: #94a3b8;
+  font-size: 14px;
+  margin-top: 8px;
+}
