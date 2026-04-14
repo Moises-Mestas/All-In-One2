@@ -53,6 +53,7 @@ services:
     volumes:
       - ./apps/api/app:/app/app
       - ./packages:/app/packages
+      - ./apps/api/tests:/app/tests
     networks:
       - cms_network
     depends_on:
