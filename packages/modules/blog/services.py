@@ -4,10 +4,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, or_, and_
 from fastapi import HTTPException
 from datetime import datetime, timezone
-
-# 👇 CORRECCIÓN 1: Importamos explícitamente la clase PostStatus
 from packages.modules.blog.models import Post, Category, PostStatus
-from packages.modules.blog.schemas import PostCreate, CategoryCreate, PostUpdate
+# 👇 CORRECCIÓN 1: Importamos explícitamente la clase PostStatus
+from packages.modules.blog.models import Post, Category
+from packages.modules.blog.schemas import PostCreate, CategoryCreate
+from sqlalchemy import select, or_, and_
 
 # 🧠 UTILIDAD: Generador automático de Slugs
 def generate_slug(text: str) -> str:
@@ -47,20 +48,34 @@ async def create_post(db: AsyncSession, site_id: int, post_in: PostCreate) -> Po
     await db.refresh(new_post)
     return new_post
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async def get_posts_by_site(db: AsyncSession, site_id: int, only_published: bool = False):
     query = select(Post).where(Post.site_id == site_id)
     
     if only_published:
-        # En la web pública, mostramos publicados + los programados cuya hora ya llegó
         now = datetime.now(timezone.utc)
-        
-        # 👇 CORRECCIÓN 2: Usar PostStatus nativo y validar que haya fecha
+        # 🟠 REFACTORIZACIÓN (Fase Naranja):
+        # 1. Usamos Enums (PostStatus.PUBLISHED.value) en lugar de strings quemados.
+        # 2. Agregamos lógica avanzada para soportar artículos programados (SCHEDULED)
         query = query.where(
             or_(
-                Post.status == PostStatus.PUBLISHED,
+                Post.status == PostStatus.PUBLISHED.value,
                 and_(
-                    Post.status == PostStatus.SCHEDULED,
-                    Post.published_at.isnot(None), # Asegura que no rompa si es nulo
+                    Post.status == PostStatus.SCHEDULED.value,
+                    Post.published_at.isnot(None),
                     Post.published_at <= now
                 )
             )
@@ -68,6 +83,12 @@ async def get_posts_by_site(db: AsyncSession, site_id: int, only_published: bool
         
     result = await db.execute(query.order_by(Post.created_at.desc()))
     return result.scalars().all()
+
+
+
+
+
+
 
 async def get_post_by_slug(db: AsyncSession, site_id: int, slug: str) -> Post:
     result = await db.execute(select(Post).where(Post.site_id == site_id, Post.slug == slug))

@@ -1,18 +1,24 @@
-FROM python:3.12.3
+FROM python:3.12.3-slim
+
+# 1. Crear el usuario y establecer el directorio de trabajo
+RUN useradd -m appuser
 WORKDIR /app
 
-RUN useradd -m appuser
-
+# 2. Copiar dependencias y ejecutarlas
 COPY apps/api/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY apps/api/app ./app
-COPY apps/api/tests ./tests
-COPY apps/api/pytest.ini .
-COPY packages ./packages
-RUN chown -R appuser:appuser /app
+# 3. FIX: Usar --chown directamente en el COPY (Evita duplicar capas)
+COPY --chown=appuser:appuser apps/api/app ./app
+COPY --chown=appuser:appuser apps/api/tests ./tests
+COPY --chown=appuser:appuser apps/api/pytest.ini .
+COPY --chown=appuser:appuser packages ./packages
+
+# Cambiar al usuario seguro
 USER appuser
 ENV PYTHONPATH=/app:$PYTHONPATH
 
 EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-delay", "0.5"]
+
+# 4. FIX: Quitar el "--reload" para producción
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

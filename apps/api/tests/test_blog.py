@@ -98,16 +98,14 @@ async def test_blog_posts_injected_in_public(client):
     assert "Noticia Importante" in published_titles
 
 
-# =========================================
-# TC-018: Filtrado de posts DRAFT
-# =========================================
+
 @pytest.mark.asyncio
 async def test_public_posts_exclude_draft(client):
     """TC-018: Los posts en DRAFT NO aparecen en consultas públicas"""
+    # 1. ESTO ES LO QUE FALTABA: Crear el sitio y obtener el site_id
     site_id, headers = await create_site(client)
-    site_response = await client.get("/sites", headers=headers)
-    site_slug = site_response.json()[0]["slug"]
 
+    # 2. Crear el post en borrador (draft)
     await client.post(f"/modules/blog/{site_id}/posts", json={
         "title": "Post en Borrador",
         "slug": f"borrador-{int(time.time() * 1000)}",
@@ -116,7 +114,11 @@ async def test_public_posts_exclude_draft(client):
         "excerpt": "No debe verse"
     }, headers=headers)
 
+    # 3. Consultar la API pública pidiendo solo los publicados
     posts_response = await client.get(f"/modules/blog/{site_id}/posts", params={"only_published": True})
 
+    # 4. Verificar que el borrador no esté en la lista
     draft_posts = [p for p in posts_response.json() if p.get("title") == "Post en Borrador"]
+    
+    # 5. La aserción correcta (con un solo cero)
     assert len(draft_posts) == 0

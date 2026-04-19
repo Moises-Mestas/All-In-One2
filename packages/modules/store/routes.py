@@ -497,7 +497,6 @@ async def realizar_checkout(
     if not result.scalar_one_or_none():
         raise HTTPException(status_code=404, detail=ERROR_SITIO_NO_ENCONTRADO)
     
-    session_id = request.cookies.get("carrito_session") or None
     
     usuario_id = checkout_data.usuario_id if hasattr(checkout_data, 'usuario_id') and checkout_data.usuario_id else None
     

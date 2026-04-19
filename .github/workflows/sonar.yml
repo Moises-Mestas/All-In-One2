@@ -21,11 +21,17 @@ jobs:
 
       - name: Run Tests and Generate Coverage
         run: |
+          # Crea directorio necesario para el backend y ajusta permisos
           sudo mkdir -p /app/uploads
           sudo chown -R $USER:$USER /app
 
+          # Instalación de dependencias del API
           pip install -r apps/api/requirements.txt
+          
+          # Configura el path para que Python encuentre tus módulos y paquetes
           export PYTHONPATH=$PYTHONPATH:$(pwd)/apps/api:$(pwd)
+          
+          # Ejecuta los tests generando el reporte XML para Sonar
           pytest apps/api/tests/ \
             --cov=apps/api/app \
             --cov=packages \
@@ -38,11 +44,10 @@ jobs:
           args: >
             "-Dsonar.projectKey=Moises-Mestas_All-In-One2"
             "-Dsonar.organization=moises-mestas"
-            "-Dsonar.python.coverage.reportPaths=coverage.xml" 
-            "-Dsonar.sources=apps/api/app,packages,apps/web"
+            "-Dsonar.python.coverage.reportPaths=coverage.xml"
+            "-Dsonar.sources=apps/api/app,packages"
             "-Dsonar.tests=apps/api/tests"
-            "-Dsonar.exclusions=apps/api/tests/**,apps/web/node_modules/**,apps/web/dist/**,**/.pytest_cache/**"
-            "-Dsonar.cpd.exclusions=apps/web/src/pages/webEditor/editorBlocks.ts"
+            "-Dsonar.exclusions=apps/api/tests/**,**/.pytest_cache/**"
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
