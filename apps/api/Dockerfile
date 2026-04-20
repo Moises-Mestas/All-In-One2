@@ -1,4 +1,4 @@
-FROM python:3.12.8-slim-bookworm
+FROM python:3.14.4-slim-bookworm
 
 # 1. Crear grupo y usuario con UID numérico alto (10001)
 RUN groupadd -g 10001 appgroup && useradd -u 10001 -g 10001 -m appuser
