@@ -1,33 +1,31 @@
-# 1. FIX Snyk: Usamos bookworm que es la distribución de Linux más parcheada actualmente
 FROM python:3.12.8-slim-bookworm
 
-# 2. FIX Snyk: Crear grupo y usuario explícitamente por seguridad
-RUN groupadd -r appgroup && useradd -r -g appgroup -m appuser
+# 1. FIX Snyk: Crear grupo y usuario con un ID numérico estricto (1001)
+RUN groupadd -g 1001 appgroup && useradd -u 1001 -g 1001 -m appuser
 
 WORKDIR /app
 
-# 3. FIX Snyk: Actualizar pip a la última versión para evitar alertas de "Unpinned package manager"
-RUN pip install --no-cache-dir --upgrade pip
+# 2. FIX Snyk: Cambiamos al usuario usando su ID NUMÉRICO. 
+# Esto apaga instantáneamente la alerta de "Root Privileges"
+USER 1001
 
-# 4. FIX Snyk: Cambiar al usuario seguro ANTES de instalar dependencias (Evita alerta de Root Privileges)
-USER appuser
-
-# 5. Agregar la carpeta bin del usuario al PATH para que reconozca uvicorn
+# 3. Configurar PATH
 ENV PATH="/home/appuser/.local/bin:${PATH}"
 
-# 6. Copiar requirements asignando la propiedad al usuario y su grupo
-COPY --chown=appuser:appgroup apps/api/requirements.txt .
+# 4. Copiar requirements asignando la propiedad al ID 1001
+COPY --chown=1001:1001 apps/api/requirements.txt .
 
-# 7. Instalar dependencias usando el flag "--user" para que se instalen en la carpeta de appuser
+# 5. FIX Snyk: Borramos el "upgrade pip" para evitar el "Unpinned package manager".
+# Instalamos directamente los requirements.
 RUN pip install --user --no-cache-dir -r requirements.txt
 
-# 8. Copiar el resto del código
-COPY --chown=appuser:appgroup apps/api/app ./app
-COPY --chown=appuser:appgroup apps/api/tests ./tests
-COPY --chown=appuser:appgroup apps/api/pytest.ini .
-COPY --chown=appuser:appgroup packages ./packages
+# 6. Copiar el resto del código
+COPY --chown=1001:1001 apps/api/app ./app
+COPY --chown=1001:1001 apps/api/tests ./tests
+COPY --chown=1001:1001 apps/api/pytest.ini .
+COPY --chown=1001:1001 packages ./packages
 
-# 9. Healthcheck
+# 7. Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"
 
