@@ -5,21 +5,20 @@ RUN groupadd -g 10001 appgroup && useradd -u 10001 -g 10001 -m appuser
 
 WORKDIR /app
 
-# 2. EL TRUCO MAESTRO: Cambiamos al usuario ID ANTES de hacer el pip install.
-# Esto elimina la alerta de "Root privileges" al descargar paquetes de internet.
+# 2. Cambiamos al usuario ID ANTES de hacer el pip install (Aprobado por Snyk)
 USER 10001
 
-# 3. Al no ser root, pip instala en una carpeta local. Agregamos esa carpeta al PATH.
+# 3. Agregamos la carpeta local al PATH
 ENV PATH="/home/appuser/.local/bin:${PATH}"
 ENV PYTHONPATH=/app:$PYTHONPATH
 
-# 4. Copiamos el requirements asignando propiedad exclusiva al usuario 10001
+# 4. Copiamos el requirements
 COPY --chown=10001:10001 apps/api/requirements.txt .
 
-# 5. FIX SNYK: Instalamos usando el flag "--user". Snyk valida que esto es 100% seguro.
-RUN pip install --user --no-cache-dir -r requirements.txt
+# 5. FIX PEP-668: Agregamos --break-system-packages para permitir a pip instalar en Debian 12
+RUN pip install --user --no-cache-dir --break-system-packages -r requirements.txt
 
-# 6. Copiamos el resto del código del sistema
+# 6. Copiamos el resto del código
 COPY --chown=10001:10001 apps/api/app ./app
 COPY --chown=10001:10001 apps/api/tests ./tests
 COPY --chown=10001:10001 apps/api/pytest.ini .
@@ -27,7 +26,7 @@ COPY --chown=10001:10001 packages ./packages
 
 EXPOSE 8000
 
-# 7. Healthcheck para garantizar estabilidad del contenedor
+# 7. Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"
 
