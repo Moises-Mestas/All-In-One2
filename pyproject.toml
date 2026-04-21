@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cms-platform"
+version = "0.1.0"
+description = "CMS Modular Platform"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["apps/*", "packages/*"]
+include = ["*"]
+namespaces = false
