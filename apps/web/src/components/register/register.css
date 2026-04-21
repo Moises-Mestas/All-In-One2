@@ -1,0 +1,97 @@
+.card-register {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card-register .logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.card-register .logo-container img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.card-register .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-register .form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.card-register .form-group input {
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.card-register .form-group input:focus {
+  outline: none;
+  border-color: #6366f1;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.card-register .card-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.card-register .card-footer .btn-register {
+  width: 100%;
+  padding: 14px;
+  /* 👇 CORRECCIÓN: Color de fondo sólido oscuro y gradiente súper oscuro (Contraste > 6.0:1) */
+  background-color: #065f46; 
+  background-image: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.card-register .card-footer .btn-register:hover {
+  transform: translateY(-2px);
+  /* 👇 CORRECCIÓN: Sombra ajustada al nuevo verde oscuro */
+  box-shadow: 0 8px 25px rgba(6, 95, 70, 0.4);
+}
+
+.card-register .card-footer .link-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.card-register .card-footer .link-text a {
+  /* 👇 CORRECCIÓN: Verde muy oscuro para el enlace sobre el fondo blanco */
+  color: #065f46;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.card-register .card-footer .link-text a:hover {
+  text-decoration: underline;
+}
